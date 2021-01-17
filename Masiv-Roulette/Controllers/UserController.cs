@@ -61,7 +61,7 @@ namespace Masiv_Roulette.Controllers
         public IActionResult AuthenticateUser(Guid id)
         {
             var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-            if (firstCasino.AuthenticateUserInCasino(authHeader.Parameter, id))
+            if (firstCasino.AuthenticateUserByIdInCasino(authHeader.Parameter, id))
                 return Ok();
             else
                 return BadRequest();

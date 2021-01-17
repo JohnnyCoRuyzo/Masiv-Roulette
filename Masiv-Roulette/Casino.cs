@@ -51,30 +51,45 @@ namespace Masiv_Roulette
             return AllUsers.Where(user => user.ID == Id).FirstOrDefault();
         }
 
-        public bool UserExists(Guid Id)
+        public User GetUserByUserName(string userName)
+        {
+            return AllUsers.Where(user => user.UserName == userName).FirstOrDefault();
+        }
+
+        public bool UserExistsById(Guid Id)
         {
             return AllUsers.Where(user => user.ID == Id).Count() > 0;
         }
 
-        public bool AuthenticateUserInCasino(string requestCredentials, Guid userId)
+        public bool UserExistsByUserName(string userName)
         {
-            if (UserExists(userId))
+            return AllUsers.Where(user => user.UserName == userName).Count() > 0;
+        }
+
+        public bool AuthenticateUserByIdInCasino(string requestCredentials, Guid userId)
+        {
+            string[] credentialsOfAuthentication = GetUserAndPasswordOfCredentials(requestCredentials);
+            if (UserExistsById(userId))
             {
                 User userBeginAuthenticated = GetUserById(userId);
-                return AuthorizeCredentials(userBeginAuthenticated, requestCredentials);
+                return AuthorizeCredentials(userBeginAuthenticated, credentialsOfAuthentication);
             }
             else
                 return false;
         }
 
-        public bool AuthorizeCredentials(User userBeginAuthenticated, string requestCredentials)
+        public bool AuthorizeCredentials(User userBeginAuthenticated, string[] credentialsOfAuthentication)
         {
-            byte[] credentialBytes = Convert.FromBase64String(requestCredentials);
-            string[] credentialsOfAuthentication = Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
             string userNameOfAuthentication = credentialsOfAuthentication[0];
             string passwordOfAuthentication = credentialsOfAuthentication[1];
             return userBeginAuthenticated.ValidatePasswordForUserBeginAuthenticated(passwordOfAuthentication)
                 && userBeginAuthenticated.ValidateUserNameForUserBeginAuthenticated(userNameOfAuthentication) ;
+        }
+
+        public string[] GetUserAndPasswordOfCredentials(string requestCredentials)
+        {
+            byte[] credentialBytes = Convert.FromBase64String(requestCredentials);
+            return Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
         }
     }
 }
