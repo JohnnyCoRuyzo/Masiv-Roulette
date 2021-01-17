@@ -57,11 +57,10 @@ namespace Masiv_Roulette.Controllers
         }
 
         [HttpPost]
-        [Route("/AuthenticateUser/{id}")]
-        public IActionResult AuthenticateUser(Guid id)
+        [Route("/AuthenticateUser")]
+        public IActionResult AuthenticateUser()
         {
-            var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-            if (firstCasino.AuthenticateUserByIdInCasino(authHeader.Parameter, id))
+            if (firstCasino.AuthenticateRequest(Request))
                 return Ok();
             else
                 return BadRequest();

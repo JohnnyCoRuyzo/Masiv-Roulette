@@ -70,5 +70,17 @@ namespace Masiv_Roulette.Controllers
             return NoContent();
         }
 
+        [HttpPost]
+        [Route("/RouletteBetting")]
+        public IActionResult RouletteBetting([FromBody] Bet bettingContent)
+        {
+            if (firstCasino.AuthenticateRequest(Request))
+            {
+                firstCasino.InsertUserBetIntoOpenRoulette(bettingContent, Request);
+                return Ok();
+            }
+            return NoContent();
+        }
+
     }
 }

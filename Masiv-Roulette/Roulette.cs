@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Masiv_Roulette
 {
@@ -11,6 +12,8 @@ namespace Masiv_Roulette
         public int CurrentResultNumber { get; set; }
 
         public string CurrentResultColor { get; set; }
+
+        public List<Bet> AllBets { get; set; }
 
         public const int MIN_ROULETTE_RESULT = 0;
 
@@ -28,6 +31,7 @@ namespace Masiv_Roulette
             IsRouletteOpen = true;
             CurrentResultColor = "";
             CurrentResultNumber = -1;
+            AllBets = new List<Bet>();
         }
 
         public void SpinRoulette()
@@ -45,6 +49,19 @@ namespace Masiv_Roulette
                 CurrentResultColor = RED_COLOR;
             else
                 CurrentResultColor = BLACK_COLOR;
+        }
+
+        public void InsertBetIntoRouletteHistoryBets(Bet bet)
+        {
+            AllBets.Add(bet);
+        }
+
+        public void OpenRoulette()
+        {
+            IsRouletteOpen = true;
+            CurrentResultColor = "";
+            CurrentResultNumber = -1;
+            AllBets = new List<Bet>();
         }
     }
 }

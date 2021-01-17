@@ -17,12 +17,15 @@ namespace Masiv_Roulette
 
         public decimal Balance { get; set; }
 
+        public List<Bet> AllBets { get; set; }
+
         public User(string userName)
         {
             ID = Guid.NewGuid();
             UserName = userName;
             Password = GeneratePasswordAndSendEmail();
             Balance = 0;
+            AllBets = new List<Bet>();
         }
 
         public byte[] GeneratePasswordAndSendEmail()
@@ -68,6 +71,22 @@ namespace Masiv_Roulette
         static bool ByteArrayCompare(byte[] a1, byte[] a2)
         {
             return StructuralComparisons.StructuralEqualityComparer.Equals(a1, a2);
+        }
+
+        public void InsertBetIntoUserHistoryBets(Bet bet)
+        {
+            AllBets.Add(bet);
+        }
+
+        public bool UserBettingAmountIsValid(decimal bettingAmount)
+        {
+            if (Balance >= bettingAmount)
+            {
+                Balance -= bettingAmount;
+                return true;
+            }
+            else
+                return false;
         }
     }
 }
