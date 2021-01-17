@@ -24,9 +24,26 @@ namespace Masiv_Roulette
 
         public List<Roulette> CreateCasinoRoulettesByLot(int lotSize)
         {
-            var rng = new Random();
             AllRoulletes = Enumerable.Range(1, lotSize).Select(index => new Roulette()).ToList();
             return AllRoulletes;
+        }
+
+        public Guid CreateCasinoSingleRoulette()
+        {
+            Roulette roullete =  new Roulette();
+            AllRoulletes.Add(roullete);
+            return roullete.ID;
+        }
+
+        public bool IsRouletteOpenById(Guid Id)
+        {
+            if (RoulleteExists(Id))
+            {
+                Roulette roullete = GetRouletteById(Id);
+                if (roullete.IsRouletteOpen)
+                    return true;
+            }
+            return false;
         }
 
         public Roulette GetRouletteById(Guid Id)

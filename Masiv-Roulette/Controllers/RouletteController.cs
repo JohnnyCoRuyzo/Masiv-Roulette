@@ -54,16 +54,19 @@ namespace Masiv_Roulette.Controllers
             return firstCasino.AllRoulletes;
         }
 
+        [HttpPost]
+        [Route("/CreateRoulette")]
+        public Guid CreateRoulettes()
+        {
+            return firstCasino.CreateCasinoSingleRoulette();
+        }
+
         [HttpGet]
         [Route("/IsRouletteOpenById/{id}")]
         public IActionResult IsRouletteOpenById(Guid id)
         {
-            if (firstCasino.RoulleteExists(id))
-            {
-                Roulette roullete = firstCasino.GetRouletteById(id);
-                if (roullete.IsRouletteOpen)
-                    return Ok();
-            }
+            if (firstCasino.IsRouletteOpenById(id))
+                return Ok();
             return NoContent();
         }
 
