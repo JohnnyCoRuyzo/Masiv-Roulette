@@ -187,7 +187,16 @@ namespace Masiv_Roulette
                 && IsRouletteOpenById(currentRoullete.ID);
         }
 
-        public bool ValidInsertUserBetIntoOpenRoulette(Bet bettingContent, HttpRequest request)
+        public bool PlaceValidBetInCasinoRoulleteWithAuthentication(Bet bettingContent, HttpRequest request)
+        {
+            if (AuthenticateRequest(request))
+            {
+                return ValidInsertUserBetIntoOpenRoulette(bettingContent, request);
+            }
+            return false;
+        }
+
+        private bool ValidInsertUserBetIntoOpenRoulette(Bet bettingContent, HttpRequest request)
         {
             Bet currentBet = CreateCurrentCasinoBet(bettingContent);
             User userAuthenticated = GetUserAuthenticated(request);
