@@ -25,5 +25,15 @@ namespace Masiv_Roulette
             AllRoulletes = Enumerable.Range(1, lotSize).Select(index => new Roulette()).ToList();
             return AllRoulletes;
         }
+
+        public Roulette GetRouletteById(Guid Id)
+        {
+            return AllRoulletes.Where(roulette => roulette.ID == Id).FirstOrDefault();
+        }
+
+        public bool RoulleteExists(Guid Id)
+        {
+            return AllRoulletes.Where(roulette => roulette.ID == Id).Count() > 0;
+        }
     }
 }
