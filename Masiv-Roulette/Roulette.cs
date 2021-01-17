@@ -19,11 +19,9 @@ namespace Masiv_Roulette
 
         public const int MAX_ROULETTE_RESULT = 36;
 
-        public const string RED_COLOR = "Rojo";
+        public const string RED_COLOR = "RED";
 
-        public const string BLACK_COLOR = "Negro";
-
-        public const string GREEN_COLOR = "Verde";
+        public const string BLACK_COLOR = "BLACK";
 
         public Roulette()
         {
@@ -43,9 +41,7 @@ namespace Masiv_Roulette
 
         public void GetResultingColorFromSpin()
         {
-            if (CurrentResultNumber == 0)
-                CurrentResultColor = GREEN_COLOR;
-            else if (CurrentResultNumber % 2 == 0)
+            if (CurrentResultNumber % 2 == 0)
                 CurrentResultColor = RED_COLOR;
             else
                 CurrentResultColor = BLACK_COLOR;
@@ -71,6 +67,20 @@ namespace Masiv_Roulette
             CurrentResultColor = "";
             CurrentResultNumber = -1;
             AllBets = new List<Bet>();
+        }
+
+        public void CloseRoulette()
+        {
+            IsRouletteOpen = false;
+            CurrentResultColor = "";
+            CurrentResultNumber = -1;
+            AllBets = new List<Bet>();
+        }
+
+        public List<Bet> CheckWiningBetsInRoullete()
+        {
+            AllBets.ForEach(bet => bet.CheckIfBetWon(this));
+            return AllBets;
         }
     }
 }

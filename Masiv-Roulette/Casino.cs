@@ -77,7 +77,7 @@ namespace Masiv_Roulette
             return userToCreate.ID;
         }
 
-        public User GetUserById(Guid Id)
+        private User GetUserById(Guid Id)
         {
             return AllUsers.Where(user => user.ID == Id).FirstOrDefault();
         }
@@ -87,7 +87,7 @@ namespace Masiv_Roulette
             return AllUsers.Where(user => user.UserName == userName).FirstOrDefault();
         }
 
-        public bool UserExistsById(Guid Id)
+        private bool UserExistsById(Guid Id)
         {
             return AllUsers.Where(user => user.ID == Id).Count() > 0;
         }
@@ -211,6 +211,15 @@ namespace Masiv_Roulette
         {
             return userAuthenticated.UserBettingAmountIsValid(currentBet.BettingAmount)
                    && currentBet.IsValidBet();
+        }
+
+        public List<Bet> GetBetsOfClosedRoulette(Guid id)
+        {
+            Roulette roulleteToClose = GetRouletteById(id);
+            roulleteToClose.SpinRoulette();
+            List<Bet> betsAfterRouletteSpin = roulleteToClose.CheckWiningBetsInRoullete();
+            roulleteToClose.CloseRoulette();
+            return betsAfterRouletteSpin;
         }
     }
 }

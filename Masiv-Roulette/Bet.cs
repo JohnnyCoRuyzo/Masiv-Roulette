@@ -21,6 +21,8 @@ namespace Masiv_Roulette
 
         public Guid ID_User { get; set; }
 
+        public bool IsAWinningBet { get; set; }
+
         public const int MIN_BET_NUMBER = 0;
 
         public const int MAX_BET_NUMBER = 36;
@@ -57,6 +59,32 @@ namespace Masiv_Roulette
             return BettingAmountIsValid()
                 && BettingNumberIsValid()
                 && BettingColorIsValid();
+        }
+
+        public bool CheckIfBetWon(Roulette roullete)
+        {
+            IsAWinningBet = false;
+            CheckIfColorBetWon(roullete.CurrentResultColor);
+            CheckIfNumberBetWon(roullete.CurrentResultNumber);
+            return IsAWinningBet;
+        }
+
+        public void CheckIfColorBetWon(string roulleteColorResult)
+        {
+            if (!BetIsOnNumber)
+            {
+                if (roulleteColorResult == BettingColor)
+                    IsAWinningBet = true;
+            }
+        }
+
+        public void CheckIfNumberBetWon(int roulleteNumberResult)
+        {
+            if (BetIsOnNumber)
+            {
+                if (roulleteNumberResult == BettingNumber)
+                    IsAWinningBet = true;
+            }
         }
     }
 }

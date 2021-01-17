@@ -19,13 +19,26 @@ namespace Masiv_Roulette.Controllers
             {
                 new Roulette() {
                     ID = Guid.Parse("268ee596-4133-451a-9f56-dc194ceb1f4c"),
-                    IsRouletteOpen = false,
+                    IsRouletteOpen = true,
                     CurrentResultNumber = -1,
-                    CurrentResultColor = ""
+                    CurrentResultColor = "",
+                    AllBets = new List<Bet>()
+                    {
+                        new Bet()
+                        {
+                            ID = Guid.Parse("6a7bc333-be5e-450d-9016-abf1a4771410"),
+                            ID_Roulette = Guid.Parse("268ee596-4133-451a-9f56-dc194ceb1f4c"),
+                            ID_User = Guid.Parse("45317153-6fc7-431a-91a9-11f6da3e6a96"),
+                            BetIsOnNumber = false,
+                            BettingAmount = 1000,
+                            BettingColor = "BLACK",
+                            BettingNumber = 2
+                        }
+                    }
                 },
                 new Roulette() {
                     ID = Guid.Parse("c0282613-bca8-494c-9e2e-222c0159d115"),
-                    IsRouletteOpen = true,
+                    IsRouletteOpen = false,
                     CurrentResultNumber = -1,
                     CurrentResultColor = ""
                 },
@@ -77,6 +90,15 @@ namespace Masiv_Roulette.Controllers
             if (firstCasino.PlaceValidBetInCasinoRoulleteWithAuthentication(bettingContent, Request))
                 return Ok();
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("/ClosingRoulette/{id}")]
+        public List<Bet> ClosingRoulette(Guid id)
+        {
+            if (firstCasino.IsRouletteOpenById(id))
+                return firstCasino.GetBetsOfClosedRoulette(id);
+            return new List<Bet>();
         }
 
     }
