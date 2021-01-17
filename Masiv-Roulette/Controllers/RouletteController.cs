@@ -21,9 +21,8 @@ namespace Masiv_Roulette.Controllers
         [HttpGet]
         public IEnumerable<Roulette> Get()
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Roulette())
-            .ToArray();
+            Casino firstCasino = new Casino();
+            return firstCasino.AllRoulletes;
         }
     }
 }
