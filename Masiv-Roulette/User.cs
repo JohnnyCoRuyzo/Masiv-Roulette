@@ -73,9 +73,18 @@ namespace Masiv_Roulette
             return StructuralComparisons.StructuralEqualityComparer.Equals(a1, a2);
         }
 
-        public void InsertBetIntoUserHistoryBets(Bet bet)
+        public bool ValidInsertBetIntoUserHistoryBets(Bet bet)
         {
-            AllBets.Add(bet);
+            try
+            {
+                AllBets.Add(bet);
+                return true;
+            }
+            catch(Exception e)
+            {
+                _ = e.ToString();
+                return false;
+            }
         }
 
         public bool UserBettingAmountIsValid(decimal bettingAmount)

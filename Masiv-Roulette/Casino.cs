@@ -34,7 +34,7 @@ namespace Masiv_Roulette
 
         public Guid CreateCasinoSingleRoulette()
         {
-            Roulette roullete =  new Roulette();
+            Roulette roullete = new Roulette();
             AllRoulletes.Add(roullete);
             return roullete.ID;
         }
@@ -105,21 +105,37 @@ namespace Masiv_Roulette
 
         public bool AuthenticateRequest(HttpRequest request)
         {
-            var authHeader = AuthenticationHeaderValue.Parse(request.Headers["Authorization"]);
-            Guid userId = Guid.Parse(request.Headers["userID"].ToString());
-            return AuthenticateUserByIdInCasino(authHeader.Parameter, userId);
+            try
+            {
+                var authHeader = AuthenticationHeaderValue.Parse(request.Headers["Authorization"]);
+                Guid userId = Guid.Parse(request.Headers["userID"].ToString());
+                return AuthenticateUserByIdInCasino(authHeader.Parameter, userId);
+            }
+            catch(Exception e)
+            {
+                _ = e.ToString();
+                return false;
+            }
         }
 
         private bool AuthenticateUserByIdInCasino(string requestCredentials, Guid userId)
         {
-            string[] credentialsOfAuthentication = GetUserAndPasswordOfCredentials(requestCredentials);
-            if (UserExistsById(userId))
+            try
             {
-                User userBeginAuthenticated = GetUserById(userId);
-                return AuthorizeCredentials(userBeginAuthenticated, credentialsOfAuthentication);
+                string[] credentialsOfAuthentication = GetUserAndPasswordOfCredentials(requestCredentials);
+                if (UserExistsById(userId))
+                {
+                    User userBeginAuthenticated = GetUserById(userId);
+                    return AuthorizeCredentials(userBeginAuthenticated, credentialsOfAuthentication);
+                }
+                else
+                    return false;
             }
-            else
+            catch (Exception e)
+            {
+                _ = e.ToString();
                 return false;
+            }
         }
 
         private bool AuthorizeCredentials(User userBeginAuthenticated, string[] credentialsOfAuthentication)
@@ -127,13 +143,20 @@ namespace Masiv_Roulette
             string userNameOfAuthentication = credentialsOfAuthentication[0];
             string passwordOfAuthentication = credentialsOfAuthentication[1];
             return userBeginAuthenticated.ValidatePasswordForUserBeginAuthenticated(passwordOfAuthentication)
-                && userBeginAuthenticated.ValidateUserNameForUserBeginAuthenticated(userNameOfAuthentication) ;
+                && userBeginAuthenticated.ValidateUserNameForUserBeginAuthenticated(userNameOfAuthentication);
         }
 
         private string[] GetUserAndPasswordOfCredentials(string requestCredentials)
         {
-            byte[] credentialBytes = Convert.FromBase64String(requestCredentials);
-            return Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+            try
+            {
+                byte[] credentialBytes = Convert.FromBase64String(requestCredentials);
+                return Encoding.UTF8.GetString(credentialBytes).Split(new[] { ':' }, 2);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
 
         public Bet CreateCurrentCasinoBet(Bet currentBet)
@@ -142,16 +165,20 @@ namespace Masiv_Roulette
             return currentBet;
         }
 
-        public void InsertBetIntoOpenRoulette(Bet currentBet, User userAuthenticated)
+        public bool ValidInsertBetIntoOpenRoulette(Bet currentBet, User userAuthenticated)
         {
             Roulette currentRoullete = GetRandomRouletteByOpenStatus(true);
             if (RouletteExistsAndIsOpen(currentRoullete))
-            {
-                currentBet.ID_User = userAuthenticated.ID;
-                currentBet.ID_Roulette = currentRoullete.ID;
-                userAuthenticated.InsertBetIntoUserHistoryBets(currentBet);
-                currentRoullete.InsertBetIntoRouletteHistoryBets(currentBet);
-            }
+                return ValidInsertIntoRouletteAndUserBets(currentBet, userAuthenticated, currentRoullete);
+            return false;
+        }
+
+        public bool ValidInsertIntoRouletteAndUserBets(Bet currentBet, User userAuthenticated, Roulette currentRoullete)
+        {
+            currentBet.ID_User = userAuthenticated.ID;
+            currentBet.ID_Roulette = currentRoullete.ID;
+            return userAuthenticated.ValidInsertBetIntoUserHistoryBets(currentBet)
+                && currentRoullete.ValidInsertBetIntoRouletteHistoryBets(currentBet);
         }
 
         private bool RouletteExistsAndIsOpen(Roulette currentRoullete)
@@ -160,14 +187,15 @@ namespace Masiv_Roulette
                 && IsRouletteOpenById(currentRoullete.ID);
         }
 
-        public void InsertUserBetIntoOpenRoulette(Bet bettingContent, HttpRequest request)
+        public bool ValidInsertUserBetIntoOpenRoulette(Bet bettingContent, HttpRequest request)
         {
             Bet currentBet = CreateCurrentCasinoBet(bettingContent);
             User userAuthenticated = GetUserAuthenticated(request);
             if (BetIsValid(userAuthenticated, currentBet))
             {
-                InsertBetIntoOpenRoulette(currentBet, userAuthenticated);
+                return ValidInsertBetIntoOpenRoulette(currentBet, userAuthenticated);
             }
+            return false;
         }
 
         public bool BetIsValid(User userAuthenticated, Bet currentBet)

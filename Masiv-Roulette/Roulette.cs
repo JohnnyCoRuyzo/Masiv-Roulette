@@ -51,9 +51,18 @@ namespace Masiv_Roulette
                 CurrentResultColor = BLACK_COLOR;
         }
 
-        public void InsertBetIntoRouletteHistoryBets(Bet bet)
+        public bool ValidInsertBetIntoRouletteHistoryBets(Bet bet)
         {
-            AllBets.Add(bet);
+            try
+            {
+                AllBets.Add(bet);
+                return true;
+            }
+            catch (Exception e)
+            {
+                _ = e.ToString();
+                return false;
+            }
         }
 
         public void OpenRoulette()

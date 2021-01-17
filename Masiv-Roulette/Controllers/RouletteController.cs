@@ -76,7 +76,7 @@ namespace Masiv_Roulette.Controllers
         {
             if (firstCasino.AuthenticateRequest(Request))
             {
-                firstCasino.InsertUserBetIntoOpenRoulette(bettingContent, Request);
+                firstCasino.ValidInsertUserBetIntoOpenRoulette(bettingContent, Request);
                 return Ok();
             }
             return NoContent();
