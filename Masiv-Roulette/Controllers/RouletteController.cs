@@ -20,14 +20,14 @@ namespace Masiv_Roulette.Controllers
                 new Roulette(){
                     ID = Guid.Parse("268ee596-4133-451a-9f56-dc194ceb1f4c"),
                     IsRouletteOpen = false,
-                    ResultNumber = -1,
-                    ResultColor = ""
+                    CurrentResultNumber = -1,
+                    CurrentResultColor = ""
                 },
                 new Roulette(){
                     ID = Guid.Parse("c0282613-bca8-494c-9e2e-222c0159d115"),
                     IsRouletteOpen = true,
-                    ResultNumber = -1,
-                    ResultColor = ""
+                    CurrentResultNumber = -1,
+                    CurrentResultColor = ""
                 },
             }
         };

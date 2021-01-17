@@ -8,9 +8,9 @@ namespace Masiv_Roulette
 
         public bool IsRouletteOpen { get; set; }
 
-        public int ResultNumber { get; set; }
+        public int CurrentResultNumber { get; set; }
 
-        public string ResultColor { get; set; }
+        public string CurrentResultColor { get; set; }
 
         public const int MIN_ROULETTE_RESULT = 0;
 
@@ -26,25 +26,25 @@ namespace Masiv_Roulette
         {
             ID = Guid.NewGuid();
             IsRouletteOpen = true;
-            ResultColor = "";
-            ResultNumber = -1;
+            CurrentResultColor = "";
+            CurrentResultNumber = -1;
         }
 
         public void SpinRoulette()
         {
             var randomRange = new Random();
-            ResultNumber = randomRange.Next(MIN_ROULETTE_RESULT, MAX_ROULETTE_RESULT);
+            CurrentResultNumber = randomRange.Next(MIN_ROULETTE_RESULT, MAX_ROULETTE_RESULT);
             GetResultingColorFromSpin();
         }
 
         public void GetResultingColorFromSpin()
         {
-            if (ResultNumber == 0)
-                ResultColor = GREEN_COLOR;
-            else if (ResultNumber % 2 == 0)
-                ResultColor = RED_COLOR;
+            if (CurrentResultNumber == 0)
+                CurrentResultColor = GREEN_COLOR;
+            else if (CurrentResultNumber % 2 == 0)
+                CurrentResultColor = RED_COLOR;
             else
-                ResultColor = BLACK_COLOR;
+                CurrentResultColor = BLACK_COLOR;
         }
     }
 }
