@@ -40,7 +40,8 @@ namespace Masiv_Roulette.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Roulette> Get()
+        [Route("/GetAllRoulettes")]
+        public IEnumerable<Roulette> GetAllRoulettes()
         {
             return firstCasino.AllRoulletes;
         }
