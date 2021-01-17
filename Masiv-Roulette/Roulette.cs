@@ -22,6 +22,14 @@ namespace Masiv_Roulette
 
         public const string GREEN_COLOR = "Verde";
 
+        public Roulette()
+        {
+            ID = Guid.NewGuid();
+            IsRouletteOpen = true;
+            ResultColor = "";
+            ResultNumber = -1;
+        }
+
         public void SpinRoulette()
         {
             var randomRange = new Random();
