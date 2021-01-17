@@ -11,6 +11,8 @@ namespace Masiv_Roulette.Controllers
     [Route("[controller]")]
     public class RouletteController : ControllerBase
     {
+        private readonly Casino firstCasino = new Casino();
+
         private readonly ILogger<RouletteController> _logger;
 
         public RouletteController(ILogger<RouletteController> logger)
@@ -21,7 +23,6 @@ namespace Masiv_Roulette.Controllers
         [HttpGet]
         public IEnumerable<Roulette> Get()
         {
-            Casino firstCasino = new Casino();
             return firstCasino.AllRoulletes;
         }
     }
