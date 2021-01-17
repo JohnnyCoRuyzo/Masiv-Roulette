@@ -11,11 +11,6 @@ namespace Masiv_Roulette.Controllers
     [Route("[controller]")]
     public class RouletteController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<RouletteController> _logger;
 
         public RouletteController(ILogger<RouletteController> logger)
@@ -27,12 +22,7 @@ namespace Masiv_Roulette.Controllers
         public IEnumerable<Roulette> Get()
         {
             var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Roulette
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
+            return Enumerable.Range(1, 5).Select(index => new Roulette())
             .ToArray();
         }
     }
