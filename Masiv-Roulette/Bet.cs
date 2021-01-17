@@ -11,7 +11,11 @@ namespace Masiv_Roulette
 
         public decimal BettingAmount { get; set; }
 
+        public bool BetIsOnNumber { get; set; }
+
         public int BettingNumber { get; set; }
+
+        public string BettingColor { get; set; }
 
         public Guid ID_Roulette { get; set; }
 
@@ -25,9 +29,9 @@ namespace Masiv_Roulette
 
         public const decimal MAX_BET_AMOUNT = 10000;
 
-        public const string EVEN_NUMBERS_COLOR = "Rojo";
+        public const string EVEN_NUMBERS_COLOR = "RED";
 
-        public const string ODD_NUMBERS_COLOR = "Negro";
+        public const string ODD_NUMBERS_COLOR = "NEGRO";
 
         public bool BettingAmountIsValid()
         {
@@ -36,7 +40,23 @@ namespace Masiv_Roulette
 
         public bool BettingNumberIsValid()
         {
-            return MIN_BET_NUMBER < BettingNumber && BettingNumber <= MAX_BET_NUMBER;
+            if (BetIsOnNumber)
+                return MIN_BET_NUMBER < BettingNumber && BettingNumber <= MAX_BET_NUMBER;
+            return true;
+        }
+
+        public bool BettingColorIsValid()
+        {
+            if (!BetIsOnNumber)
+                return EVEN_NUMBERS_COLOR == BettingColor.ToUpper() || ODD_NUMBERS_COLOR == BettingColor.ToUpper();
+            return true;
+        }
+
+        public bool IsValidBet()
+        {
+            return BettingAmountIsValid()
+                && BettingNumberIsValid()
+                && BettingColorIsValid();
         }
     }
 }

@@ -210,8 +210,7 @@ namespace Masiv_Roulette
         public bool BetIsValid(User userAuthenticated, Bet currentBet)
         {
             return userAuthenticated.UserBettingAmountIsValid(currentBet.BettingAmount)
-                   && currentBet.BettingAmountIsValid()
-                   && currentBet.BettingNumberIsValid();
+                   && currentBet.IsValidBet();
         }
     }
 }
