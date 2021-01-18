@@ -19,10 +19,9 @@ namespace Masiv_Roulette
 
         public List<Bet> AllBets { get; set; }
 
-        public User(string userName)
+        public User()
         {
             ID = Guid.NewGuid();
-            UserName = userName;
             Password = GeneratePasswordAndSendEmail();
             Balance = 0;
             AllBets = new List<Bet>();

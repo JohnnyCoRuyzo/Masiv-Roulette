@@ -24,6 +24,7 @@ namespace Masiv_Roulette
         {
             ID = Guid.NewGuid();
             AllRoulletes = CreateCasinoRoulettesByLot(LOT_DEFAULT_SIZE);
+            AllUsers = new List<User>();
         }
 
         public List<Roulette> CreateCasinoRoulettesByLot(int lotSize)
@@ -72,7 +73,8 @@ namespace Masiv_Roulette
 
         public Guid CreateUserInCasino(string userName)
         {
-            User userToCreate = new User(userName);
+            User userToCreate = new User();
+            userToCreate.UserName = userName;
             AllUsers.Add(userToCreate);
             return userToCreate.ID;
         }
@@ -226,7 +228,7 @@ namespace Masiv_Roulette
         {
             roulleteToClose.CheckWiningBetsInRoullete();
             GiveMoneyToWinners(roulleteToClose);
-            return roulleteToClose.AllBets;
+            return roulleteToClose.AllBets.Where(bet => !bet.BetClosed).ToList();
         }
 
         public void GiveMoneyToWinners(Roulette currentRoulette)
