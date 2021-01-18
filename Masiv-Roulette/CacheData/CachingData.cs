@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,8 +21,22 @@ namespace Masiv_Roulette.CacheData
 
         public CachingData()
         {
-            this.muxer = ConnectionMultiplexer.Connect("redis-13730.c241.us-east-1-4.ec2.cloud.redislabs.com:13730,password=fRJChLU99wCykjK5r29DFPQ2qoh7WrQd");
+            string redisConn = GetRedisConnectionString();
+            this.muxer = ConnectionMultiplexer.Connect(redisConn);
             this.conn = muxer.GetDatabase();
+        }
+
+        public string GetRedisConnectionString()
+        {
+            DotNetEnv.Env.Load();
+            DotNetEnv.Env.TraversePath().Load();
+            string filePath = System.AppDomain.CurrentDomain.BaseDirectory + "../../../.env";
+            DotNetEnv.Env.Load(filePath);
+            using (var stream = File.OpenRead(filePath))
+            {
+                DotNetEnv.Env.Load(stream);
+            }
+            return DotNetEnv.Env.GetString("REDIS_CONNECTION_STRING");
         }
 
         public void SetCasino()
