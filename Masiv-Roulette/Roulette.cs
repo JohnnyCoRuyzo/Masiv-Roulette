@@ -61,26 +61,17 @@ namespace Masiv_Roulette
             }
         }
 
-        public void OpenRoulette()
-        {
-            IsRouletteOpen = true;
-            CurrentResultColor = "";
-            CurrentResultNumber = -1;
-            AllBets = new List<Bet>();
-        }
-
         public void CloseRoulette()
         {
             IsRouletteOpen = false;
             CurrentResultColor = "";
             CurrentResultNumber = -1;
-            AllBets = new List<Bet>();
+            AllBets.ForEach(bet => bet.BetClosed = true);
         }
 
-        public List<Bet> CheckWiningBetsInRoullete()
+        public void CheckWiningBetsInRoullete()
         {
-            AllBets.ForEach(bet => bet.CheckIfBetWon(this));
-            return AllBets;
+            AllBets.ForEach(bet =>bet.CheckIfBetWon(this));
         }
     }
 }

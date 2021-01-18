@@ -32,7 +32,9 @@ namespace Masiv_Roulette.Controllers
                             BetIsOnNumber = false,
                             BettingAmount = 1000,
                             BettingColor = "BLACK",
-                            BettingNumber = 2
+                            BettingNumber = 2,
+                            IsAWinningBet = false,
+                            BetClosed = false
                         }
                     }
                 },

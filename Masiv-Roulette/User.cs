@@ -15,7 +15,7 @@ namespace Masiv_Roulette
 
         public byte[] Password { get; set; }
 
-        public decimal Balance { get; set; }
+        public double Balance { get; set; }
 
         public List<Bet> AllBets { get; set; }
 
@@ -87,7 +87,7 @@ namespace Masiv_Roulette
             }
         }
 
-        public bool UserBettingAmountIsValid(decimal bettingAmount)
+        public bool UserBettingAmountIsValid(double bettingAmount)
         {
             if (Balance >= bettingAmount)
             {
@@ -96,6 +96,41 @@ namespace Masiv_Roulette
             }
             else
                 return false;
+        }
+
+        public void ChangeWiningBetStateAndReceiveMoney(Roulette currentRoulette)
+        {
+            CheckUserWiningBets(currentRoulette);
+            List<Bet> winningBets = GetOpenWinningBets(currentRoulette);
+            if (CheckIfUserHasWiningBets(winningBets)) 
+                ReceiveMoney(winningBets);
+        }
+
+        public void ReceiveMoney(List<Bet> winningBets)
+        {
+            double winningAmount = winningBets.Sum(bet => bet.MoneyToGive());
+
+            Balance += winningAmount;
+        }
+
+        public void CheckUserWiningBets(Roulette currentRoulette)
+        {
+            AllBets.ForEach(bet => bet.CheckIfBetWon(currentRoulette));
+        }
+
+        public List<Bet> GetOpenWinningBets(Roulette currentRoulette)
+        {
+            return AllBets.Where(bet => !bet.BetClosed && bet.ID_Roulette == currentRoulette.ID && bet.IsAWinningBet).ToList();
+        }
+
+        public bool CheckIfUserHasWiningBets(List<Bet> winningBets)
+        {
+            return winningBets != null;
+        }
+
+        public void ClosedRouletteBets(Roulette currentRoulette)
+        {   
+            AllBets.Where(bet => bet.ID_Roulette == currentRoulette.ID).ToList().ForEach(bet => bet.BetClosed = true);
         }
     }
 }

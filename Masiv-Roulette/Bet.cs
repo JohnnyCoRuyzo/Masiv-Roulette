@@ -9,7 +9,7 @@ namespace Masiv_Roulette
     {
         public Guid ID { get; set; }
 
-        public decimal BettingAmount { get; set; }
+        public double BettingAmount { get; set; }
 
         public bool BetIsOnNumber { get; set; }
 
@@ -23,17 +23,23 @@ namespace Masiv_Roulette
 
         public bool IsAWinningBet { get; set; }
 
+        public bool BetClosed { get; set; }
+
         public const int MIN_BET_NUMBER = 0;
 
         public const int MAX_BET_NUMBER = 36;
+        
+        public const double MIN_BET_AMOUNT = 0;
 
-        public const decimal MIN_BET_AMOUNT = 0;
-
-        public const decimal MAX_BET_AMOUNT = 10000;
+        public const double MAX_BET_AMOUNT = 10000;
 
         public const string EVEN_NUMBERS_COLOR = "RED";
 
         public const string ODD_NUMBERS_COLOR = "NEGRO";
+
+        public const double WINNING_NUMBER_MULTIPLIER = 5;
+
+        public const double WINNING_COLOR_MULTIPLIER = 1.8;
 
         public bool BettingAmountIsValid()
         {
@@ -61,12 +67,19 @@ namespace Masiv_Roulette
                 && BettingColorIsValid();
         }
 
-        public bool CheckIfBetWon(Roulette roullete)
+        public bool CheckIfBetWon(Roulette roulette)
         {
             IsAWinningBet = false;
-            CheckIfColorBetWon(roullete.CurrentResultColor);
-            CheckIfNumberBetWon(roullete.CurrentResultNumber);
+            if(CheckIfOpenBetAndIfIsFromThisRoulette(roulette)) { 
+                CheckIfColorBetWon(roulette.CurrentResultColor);
+                CheckIfNumberBetWon(roulette.CurrentResultNumber);
+            }
             return IsAWinningBet;
+        }
+
+        public bool CheckIfOpenBetAndIfIsFromThisRoulette(Roulette roullete)
+        {
+            return roullete.ID == ID_Roulette && !BetClosed;
         }
 
         public void CheckIfColorBetWon(string roulleteColorResult)
@@ -85,6 +98,29 @@ namespace Masiv_Roulette
                 if (roulleteNumberResult == BettingNumber)
                     IsAWinningBet = true;
             }
+        }
+
+        public double MoneyToGive()
+        {
+            return MoneyToGiveBecauseNumberWon() + MoneyToGiveBecauseColorWon();
+        }
+
+        public double MoneyToGiveBecauseNumberWon()
+        {
+            if (BetIsOnNumber)
+            {
+                return BettingAmount * WINNING_NUMBER_MULTIPLIER;
+            }
+            return 0;
+        }
+
+        public double MoneyToGiveBecauseColorWon()
+        {
+            if (!BetIsOnNumber)
+            {
+                return BettingAmount * WINNING_COLOR_MULTIPLIER;
+            }
+            return 0;
         }
     }
 }

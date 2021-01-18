@@ -217,9 +217,28 @@ namespace Masiv_Roulette
         {
             Roulette roulleteToClose = GetRouletteById(id);
             roulleteToClose.SpinRoulette();
-            List<Bet> betsAfterRouletteSpin = roulleteToClose.CheckWiningBetsInRoullete();
+            List<Bet> betsAfterRouletteSpin = CheckWiningBetsInRouletteAndGiveMoneyToWinner(roulleteToClose);
             roulleteToClose.CloseRoulette();
             return betsAfterRouletteSpin;
+        }
+
+        public List<Bet> CheckWiningBetsInRouletteAndGiveMoneyToWinner(Roulette roulleteToClose)
+        {
+            roulleteToClose.CheckWiningBetsInRoullete();
+            GiveMoneyToWinners(roulleteToClose);
+            return roulleteToClose.AllBets;
+        }
+
+        public void GiveMoneyToWinners(Roulette currentRoulette)
+        {
+            List<User> winningUsers = GetWinningUsersWithCurrentRouletteBets(currentRoulette);
+            winningUsers.ForEach(user => user.ChangeWiningBetStateAndReceiveMoney(currentRoulette));
+        }
+
+        public List<User> GetWinningUsersWithCurrentRouletteBets(Roulette currentRoulette)
+        {
+            List<Guid> winningUsersId = currentRoulette.AllBets.Select(bet => bet.ID_User).ToList();
+            return AllUsers.Where(user => winningUsersId.Contains(user.ID)).ToList();
         }
     }
 }
