@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyCaching.Core.Configurations;
+using Masiv_Roulette.Models;
 
 namespace Masiv_Roulette
 {
@@ -26,33 +27,32 @@ namespace Masiv_Roulette
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
-
-            Tuple<string, int> redisConnection = GetRedisConnectionString();
-            string serverPassword = GetServerPassword();
+            services.AddControllers(); 
+            RedisConfiguration redisConfiguration = GetRedisConfiguration();
             services.AddEasyCaching(options =>
             {
                 options.UseRedis(redisConfig => {
-                    redisConfig.DBConfig.Endpoints.Add(new ServerEndPoint(redisConnection.Item1, redisConnection.Item2));
-                    if (!string.IsNullOrEmpty(serverPassword))
+                    redisConfig.DBConfig.Endpoints.Add(new ServerEndPoint(redisConfiguration.Hostname, redisConfiguration.Port));
+                    /*if (!string.IsNullOrEmpty(redisConfiguration.ServerPassword))
                     {
-                        redisConfig.DBConfig.Password = serverPassword;
-                    }
+                        redisConfig.DBConfig.Password = redisConfiguration.ServerPassword;
+                    }*/
 
                     redisConfig.DBConfig.AllowAdmin = true;
-                }, "my-redis");
+                }, redisConfiguration.Channel);
             });
         }
 
-        public Tuple<string, int> GetRedisConnectionString()
+        public RedisConfiguration GetRedisConfiguration()
         {
             string[] redisConnection = Configuration.GetConnectionString("RedisConnectionString").Split(":");
-            return Tuple.Create(redisConnection[0], Convert.ToInt32(redisConnection[1]));
-        }
-
-        public string GetServerPassword()
-        {
-            return Configuration.GetSection("Server")["serverPassword"];
+            return new RedisConfiguration()
+            {
+                Hostname = redisConnection[0],
+                Port = Convert.ToInt32(redisConnection[1]),
+                ServerPassword = Configuration.GetSection("Server")["password"],
+                Channel = Configuration.GetSection("Server")["channelName"]
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
