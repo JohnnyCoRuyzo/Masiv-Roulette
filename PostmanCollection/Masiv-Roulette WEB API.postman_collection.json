@@ -1,0 +1,132 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Masiv-Roulette WEB API",
+		"_postman_id": "465b3370-265c-4ee7-611e-62006cfc705b",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1) CreateRoulette",
+			"request": {
+				"url": "https://localhost:49165/CreateRoulette",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "2) IsRoulleteOpenById",
+			"request": {
+				"url": "https://localhost:49165/IsRouletteOpenById/c0282613-bca8-494c-9e2e-222c0159d115",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "3) RouletteBetting",
+			"request": {
+				"url": "https://localhost:49165/RouletteBetting",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9obm5hdGFuREVWOnBhc3N3b3Jk",
+						"description": ""
+					},
+					{
+						"key": "userID",
+						"value": "45317153-6fc7-431a-91a9-11f6da3e6a96",
+						"description": ""
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"bettingAmount\": 1000,\n\t\"betIsOnNumber\": true,\n\t\"bettingNumber\": 4,\n\t\"bettingColor\": \"red\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "4) ClosingRoulette",
+			"request": {
+				"url": "https://localhost:49165/ClosingRoulette/268ee596-4133-451a-9f56-dc194ceb1f4c",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "5) GetAllRoulettes",
+			"request": {
+				"url": "https://localhost:49165/GetAllRoulettes",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "CreateUser",
+			"request": {
+				"url": "https://localhost:49161/CreateUser/johnnatanDEV",
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllUsers",
+			"request": {
+				"url": "https://localhost:49165/GetAllUsers",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticate User",
+			"request": {
+				"url": "https://localhost:49165/AuthenticateUser",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic am9obm5hdGFuREVWOnBhc3N3b3Jk",
+						"description": ""
+					},
+					{
+						"key": "userID",
+						"value": "45317153-6fc7-431a-91a9-11f6da3e6a96",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
