@@ -49,11 +49,11 @@ This is a Web API implemented with .NET Core, RedisLab DB and Docker Containers.
 
 ## Web API Postman Link Collection: 
  
-    https://www.getpostman.com/collections/c5d09868f948a69cfc70
+[Postman Collection Link](https://www.getpostman.com/collections/c5d09868f948a69cfc70)
 
 ## Web API Postman .json Export
 
-    https://github.com/JohnnyCoRuyzo/Masiv-Roulette/blob/master/PostmanCollection/Masiv-Roulette%20WEB%20API.postman_collection.json
+[Postman Collection JSON](https://github.com/JohnnyCoRuyzo/Masiv-Roulette/blob/master/PostmanCollection/Masiv-Roulette%20WEB%20API.postman_collection.json)
 
 
 
