@@ -1,5 +1,4 @@
-﻿using EasyCaching.Core;
-using Masiv_Roulette.Models;
+﻿using Masiv_Roulette.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
