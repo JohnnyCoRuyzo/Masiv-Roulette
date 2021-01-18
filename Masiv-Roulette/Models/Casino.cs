@@ -58,7 +58,9 @@ namespace Masiv_Roulette
 
         private Roulette GetRandomRouletteByOpenStatus(bool openStatus)
         {
-            return AllRoulletes.Where(roulette => roulette.IsRouletteOpen == openStatus).FirstOrDefault();
+            var randomRange = new Random();
+            var roulettes = AllRoulletes.Where(roulette => roulette.IsRouletteOpen == openStatus).ToList().ToArray();
+            return roulettes[randomRange.Next(roulettes.Length)];
         }
 
         private bool RoulleteExistsById(Guid Id)
@@ -215,7 +217,7 @@ namespace Masiv_Roulette
                    && currentBet.IsValidBet();
         }
 
-        public List<Bet> GetBetsOfClosedRoulette(Guid id)
+        public List<Bet> GetBetsAfterRouletteClosing(Guid id)
         {
             Roulette roulleteToClose = GetRouletteById(id);
             roulleteToClose.SpinRoulette();

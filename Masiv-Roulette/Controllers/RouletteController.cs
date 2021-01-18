@@ -70,8 +70,9 @@ namespace Masiv_Roulette.Controllers
             cachingData.GetCasino();
             if (cachingData.CurrentCasino.IsRouletteOpenById(id))
             {
+                List<Bet> bets = cachingData.CurrentCasino.GetBetsAfterRouletteClosing(id);
                 cachingData.SetCasino();
-                return cachingData.CurrentCasino.GetBetsOfClosedRoulette(id);
+                return bets;
             }
             return new List<Bet>();
         }

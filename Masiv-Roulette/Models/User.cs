@@ -103,12 +103,12 @@ namespace Masiv_Roulette
             List<Bet> winningBets = GetOpenWinningBets(currentRoulette);
             if (CheckIfUserHasWiningBets(winningBets)) 
                 ReceiveMoney(winningBets);
+            ClosedUserBetsByRoulette(currentRoulette);
         }
 
         public void ReceiveMoney(List<Bet> winningBets)
         {
             double winningAmount = winningBets.Sum(bet => bet.MoneyToGive());
-
             Balance += winningAmount;
         }
 
@@ -127,7 +127,7 @@ namespace Masiv_Roulette
             return winningBets != null;
         }
 
-        public void ClosedRouletteBets(Roulette currentRoulette)
+        public void ClosedUserBetsByRoulette(Roulette currentRoulette)
         {   
             AllBets.Where(bet => bet.ID_Roulette == currentRoulette.ID).ToList().ForEach(bet => bet.BetClosed = true);
         }
