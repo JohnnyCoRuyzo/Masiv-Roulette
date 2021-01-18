@@ -3,6 +3,8 @@
 
 This is a Web API implemented with .NET Core, RedisLab DB and Docker Containers.
 
+Note: Enviromental Variables are stored in .env file and Github enviromental variables.
+
 ## There are 5 simple endpoints: 
 
 ### 1) API to create a new Roulette.
